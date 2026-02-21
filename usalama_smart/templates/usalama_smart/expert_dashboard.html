@@ -1,0 +1,48 @@
+{% extends 'usalama_smart/base.html' %}
+{% load static i18n %}
+
+{% block title %}{{ expert.name }}'s Dashboard{% endblock %}
+{% block content %}
+<body class="expert-dashboard-page">
+    <div class="dashboard-container">
+        <h1>{{ expert.name }}'s {% trans "Dashboard" %}</h1>
+        <h2>{% trans "Upcoming Consultations" %}</h2>
+        <div class="consultation-list">
+            {% if consultations %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>{% trans "Date" %}</th>
+                            <th>{% trans "User" %}</th>
+                            <th>{% trans "Message" %}</th>
+                            <th>{% trans "Status" %}</th>
+                            <th>{% trans "Actions" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for consultation in consultations %}
+                            <tr>
+                                <td>{{ consultation.consultation_date|date:"Y-m-d H:i" }}</td>
+                                <td>{{ consultation.user_name }}</td>
+                                <td>{{ consultation.message }}</td>
+                                <td>{{ consultation.status }}</td>
+                                <td>
+                                    <form method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="consultation_id" value="{{ consultation.id }}">
+                                        {{ form.status }}
+                                        {{ form.meeting_link }}
+                                        {{ form.decline_message }}
+                                        <button type="submit">{% trans "Submit" %}</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>{% trans "No upcoming consultations." %}</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

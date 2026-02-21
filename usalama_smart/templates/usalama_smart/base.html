@@ -1,0 +1,112 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'usalama_smart/main.css' %}">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>{% block title %}{% trans "Document" %}{% endblock %}</title>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="{% static 'usalama_smart/img/logo.png' %}" alt="{% trans 'Logo' %}">
+        </div>
+        <div class="nav-menu">
+            <i id="menu-icon" class="fas fa-bars hamburger-icon"></i>
+            <ul>
+                <li><a href="{% url 'usalama_smart:home' %}">{% trans "Home" %}</a></li>
+    
+                {% if request.user.is_authenticated %}
+                <li><a href="{% url 'usalama_smart:user_dashboard' %}">{% trans "User Dashboard" %}</a></li>
+                {% endif %}
+    
+                <li><a href="{% url 'usalama_smart:ohs_link_list' %}">{% trans "OHS regulations & guidelines" %}</a></li>
+    
+                <li><a href="{% url 'usalama_smart:about_us' %}">{% trans "About Us" %}</a></li>
+
+                <li><a href="{% url 'discussion:discussion-page' %}">{% trans "Discussion Forum" %}</a></li>
+    
+                {% if request.user.is_superuser %}
+                <li><a href="{% url 'usalama_smart:content_management_system' %}">{% trans "CMS" %}</a></li>
+                {% endif %}
+    
+                {% if request.user.is_authenticated %}
+                <li><a href="{% url 'accounts:logout' %}">{% trans "Logout" %}</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    
+    {% block content %}
+    {% endblock %}
+
+    <div class="stakeholder-section">
+        <h2>{% trans "Our Stakeholders" %}</h2>
+        <div class="stakeholder-grid">
+            <div class="stakeholder-item">
+                <img src="{% static 'usalama_smart/img/osha-logo.webp' %}" alt="{% trans 'Stakeholder 1' %}">
+            </div>
+            <div class="stakeholder-item">
+                <img src="{% static 'usalama_smart/img/wcf.jpg' %}" alt="{% trans 'Stakeholder 2' %}">
+            </div>
+            <div class="stakeholder-item">
+                <img src="{% static 'usalama_smart/img/logo-ilo.png' %}" alt="{% trans 'Stakeholder 3' %}">
+            </div>
+            <div class="stakeholder-item">
+                <img src="{% static 'usalama_smart/img/MUHAS.png' %}" alt="{% trans 'Stakeholder 4' %}">
+            </div>
+        </div>
+    </div>
+
+    <div class="contact-section">
+        <h2>{% trans "Contact Us" %}</h2>
+        <div class="contact-grid">
+            <div class="contact-item">
+                <a href="tel:+255757280637">
+                    <i class="fas fa-phone"></i>
+                    <p>{% trans "+255 757 280 637" %}</p>
+                </a>
+            </div>
+            <div class="contact-item">
+                <a href="https://wa.me/0757280637" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                    <p>{% trans "WhatsApp" %}</p>
+                </a>
+            </div>
+            <div class="contact-item">
+                <a href="https://www.instagram.com/yourusername" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                    <p>{% trans "Instagram" %}</p>
+                </a>
+            </div>
+            <div class="contact-item">
+                <a href="https://x.com/yourusername" target="_blank">
+                    <i class="fab fa-x-twitter"></i>
+                    <p>{% trans "X" %}</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer-section">
+        <div class="footer-content">
+            <p>&copy; 2024 Usalama Smart. {% trans "All rights reserved." %}</p>
+            <p>{% trans "Developed with love by" %} <span class="highlight">Msita</span></p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $("#menu-icon").click(function () {
+                $(".nav-menu ul").toggleClass("show");
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+{% extends 'usalama_smart/base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Incident List" %}{% endblock %}
+
+{% block content %}
+  <h2>{% trans "Incident List" %}</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>{% trans "Title" %}</th>
+        <th>{% trans "Severity" %}</th>
+        <th>{% trans "Date" %}</th>
+        <th>{% trans "Description" %}</th>
+        <th>{% trans "Image" %}</th>
+        <th>{% trans "Reporter" %}</th>
+        <th>{% trans "GPS Location" %}</th>
+        <th>{% trans "Company/Industry" %}</th>
+        <th>{% trans "Location" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for incident in incidents %}
+      <tr>
+        <td><strong>{{ incident.title }}</strong></td>
+        <td>{{ incident.severity }}</td>
+        <td>{{ incident.date|date:"Y-m-d H:i" }}</td>
+        <td>{{ incident.description }}</td>
+        <td>
+          {% if incident.image %}
+            <img src="{{ incident.image.url }}" alt="{% trans 'Image for' %} {{ incident.title }}" width="200">
+          {% else %}
+            {% trans "No image" %}
+          {% endif %}
+        </td>
+        <td>
+          {% if incident.reporter %}
+            {{ incident.reporter.username }}
+          {% else %}
+            {% trans "Anonymous" %}
+          {% endif %}
+        </td>
+        <td>
+          {% if incident.latitude and incident.longitude %}
+            {{ incident.latitude }}, {{ incident.longitude }}
+          {% else %}
+            {% trans "No location" %}
+          {% endif %}
+        </td>
+        <td>{{ incident.company }}</td>
+        <td>{{ incident.located }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
