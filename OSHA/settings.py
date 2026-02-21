@@ -53,7 +53,7 @@ SECRET_KEY = env.str(
   default="django-insecure-bdt74-(ltd+#_=gt(=l&6!7une1pha4(4xh!2_0&p(35nzoceq",
 )
 
-DEBUG = env.bool("DEBUG", default=True)
+DEBUG = env.bool("DEBUG", default=False)
 
 # django_project/settings.py
 ALLOWED_HOSTS = ["*"]  
