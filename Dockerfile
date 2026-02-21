@@ -1,15 +1,9 @@
-ARG PYTHON_VERSION=3.12-slim-bullseye
+ARG PYTHON_VERSION=3.14-slim
 
 FROM python:${PYTHON_VERSION}
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-
-# install psycopg2 dependencies.
-RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /code
 
@@ -22,9 +16,9 @@ RUN set -ex && \
     rm -rf /root/.cache/
 COPY . /code
 
-ENV SECRET_KEY "LPwfSwX0rZt1jQ9O1UMYHlu8JaujHfUeAgVpm7FuAQXuTll8b0"
+ENV SECRET_KEY "KgBQVG3TAyzFWb781MAwIEJmOD0reDxVoINqJDgmGG6TW7w55d"
 RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
-CMD ["gunicorn", "--bind", ":8000", "--workers", "2", "OSHA.wsgi"]
+CMD ["python","manage.py","runserver","0.0.0.0:8000"]

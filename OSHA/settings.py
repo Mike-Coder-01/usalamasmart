@@ -53,7 +53,7 @@ SECRET_KEY = env.str(
   default="django-insecure-bdt74-(ltd+#_=gt(=l&6!7une1pha4(4xh!2_0&p(35nzoceq",
 )
 
-DEBUG = env.bool("DEBUG", default=False)
+DEBUG = env.bool("DEBUG", default=True)
 
 # django_project/settings.py
 ALLOWED_HOSTS = ["*"]  
@@ -199,15 +199,13 @@ LOGIN_URL = '/accounts/signin/'
 
 LOGOUT_REDIRECT_URL = '/'
 
-# Stripe payments environment variables
-STRIPE_PUBLIC_KEY = env('STRIPE_PUBLIC_KEY')
-STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
-STRIPE_WEBHOOK_SECRET = env('STRIPE_WEBHOOK_SECRET')
+STRIPE_PUBLIC_KEY = env('STRIPE_PUBLIC_KEY', default=os.getenv('STRIPE_PUBLIC_KEY', ''))
+STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY', default=os.getenv('STRIPE_SECRET_KEY', ''))
+STRIPE_WEBHOOK_SECRET = env('STRIPE_WEBHOOK_SECRET', default=os.getenv('STRIPE_WEBHOOK_SECRET', ''))
 
+API_KEY = env('api_key', default=os.getenv('API_KEY', ''))
+PUBLIC_KEY = env('public_key', default=os.getenv('PUBLIC_KEY', ''))
 
-# MPESA payments environment variables
-API_KEY = env('api_key')
-PUBLIC_KEY = env('public_key')
 
 # EMAIL SETUPS
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -215,4 +213,4 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'michaelmsita17@gmail.com'
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default=os.getenv('EMAIL_HOST_PASSWORD', ''))
