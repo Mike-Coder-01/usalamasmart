@@ -36,7 +36,11 @@
                 {% endif %}
     
                 {% if request.user.is_authenticated %}
-                <li><a href="{% url 'accounts:logout' %}">{% trans "Logout" %}</a></li>
+                <!-- <li><a href="{% url 'accounts:logout' %}">{% trans "Logout" %}</a></li> -->
+                 <form action="{% url 'accounts:logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" style="background: none;border: none;padding:0;cursor: pointer;">Logout</button>
+                 </form>
                 {% endif %}
             </ul>
         </div>
