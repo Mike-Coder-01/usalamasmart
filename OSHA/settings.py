@@ -38,7 +38,7 @@ LANGUAGE_SESSION_KEY = 'django_language'
 environ.Env.read_env(BASE_DIR / '.env')  # <-- Updated!
 
 
-MEDIA_ROOT = '/app/uploads'
+MEDIA_ROOT = '/data/uploads'
 MEDIA_URL ='/media/'
 
 
@@ -132,9 +132,30 @@ import dj_database_url
 #     "default": dj_database_url.parse(env("DATABASE_URL", default="sqlite:///db.sqlite3")),
 # }
 
-DATABASES = {
-    "default": dj_database_url.parse(env("DATABASE_URL"))
-}
+import os
+import dj_database_url
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Get DATABASE_URL from environment
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+if DATABASE_URL:
+    DATABASES = {
+        "default": dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
+    }
+else:
+    # fallback for local dev
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+
+# Optional: ensure psycopg-binary is installed in requirements.txt
+# psycopg-binary>=3.3.3
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -200,7 +221,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/details/'
 LOGIN_URL = '/accounts/signin/'
 
-LOGOUT_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/accounts/signin'
+
 
 STRIPE_PUBLIC_KEY = env('STRIPE_PUBLIC_KEY', default=os.getenv('STRIPE_PUBLIC_KEY', ''))
 STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY', default=os.getenv('STRIPE_SECRET_KEY', ''))

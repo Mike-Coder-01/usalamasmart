@@ -1,13 +1,16 @@
-# fly.toml app configuration file generated for usalamasmartapp on 2026-02-21T06:43:06-08:00
+# fly.toml app configuration file generated for usalamasmartapp on 2026-02-21T09:25:39-08:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
 app = 'usalamasmartapp'
-primary_region = 'jnb'
+primary_region = 'ams'
 console_command = '/code/manage.py shell'
 
 [build]
+
+[deploy]
+  release_command = 'python manage.py migrate --noinput'
 
 [env]
   PORT = '8000'
@@ -28,3 +31,7 @@ console_command = '/code/manage.py shell'
 [[statics]]
   guest_path = '/code/static'
   url_prefix = '/static/'
+
+[mounts]
+  source = "media_data"
+  destination = "/data"
